@@ -18,7 +18,7 @@ function init() {
   container = document.createElement( 'div' );
   document.body.appendChild( container );
 
-  camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+  camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
   camera.position.set( 0, 0, 5000 );
 
   scene = new THREE.Scene();
@@ -34,12 +34,12 @@ function init() {
 
   // urls1 cubemap texture by <a href="http://www.zfight.com
   var urls1 = [
-    'textures/cube/skybox/px.jpg',
-    'textures/cube/skybox/nx.jpg',
-    'textures/cube/skybox/py.jpg',
-    'textures/cube/skybox/ny.jpg',
-    'textures/cube/skybox/pz.jpg',
-    'textures/cube/skybox/nz.jpg'
+    'textures/cube/roxy/px.jpg',
+    'textures/cube/roxy/nx.jpg',
+    'textures/cube/roxy/py.jpg',
+    'textures/cube/roxy/ny.jpg',
+    'textures/cube/roxy/pz.jpg',
+    'textures/cube/roxy/nz.jpg'
   ];
 
   // urls2 cubemap texture from http://aerotwist.com/tutorials/create-your-own-environment-maps/

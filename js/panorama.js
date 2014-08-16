@@ -20,7 +20,7 @@ function init() {
 	container = document.createElement('div');
 	document.body.appendChild(container);
 
-	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
+	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 1100 );
 
 	scene = new THREE.Scene();
 
@@ -35,12 +35,12 @@ function init() {
 	// cubemap texture by <a href="http://www.zfight.com
 	var materials = [
 
-		loadTexture( 'textures/cube/skybox/px.jpg' ), // right
-		loadTexture( 'textures/cube/skybox/nx.jpg' ), // left
-		loadTexture( 'textures/cube/skybox/py.jpg' ), // top
-		loadTexture( 'textures/cube/skybox/ny.jpg' ), // bottom
-		loadTexture( 'textures/cube/skybox/pz.jpg' ), // back
-		loadTexture( 'textures/cube/skybox/nz.jpg' )  // front
+		loadTexture( 'textures/cube/roxy/px.jpg' ), // right
+		loadTexture( 'textures/cube/roxy/nx.jpg' ), // left
+		loadTexture( 'textures/cube/roxy/py.jpg' ), // top
+		loadTexture( 'textures/cube/roxy/ny.jpg' ), // bottom
+		loadTexture( 'textures/cube/roxy/pz.jpg' ), // back
+		loadTexture( 'textures/cube/roxy/nz.jpg' )  // front
 
 	];
 
@@ -171,7 +171,7 @@ function animate() {
 
 function update() {
 
-	if ( isUserInteracting === false ) {
+	if ( isUserInteracting === false && false) {
 
 		lon += 0.1;
 
