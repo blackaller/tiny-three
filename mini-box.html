@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>three.js box</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<script src="js/lib/three.min.js"></script>
+	<script src="js/lib/stats.js"></script>
+	<script src="js/main.js"></script>
+	
+	
+	<style>
+		body {
+			font-family: Monospace;
+			background-color: #121212;
+			margin: 0px;
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+		var animation = document.createElement( 'script' );
+		var animations = [	"sphere.js",
+							"bubbles.js",
+							"panorama.js",
+							"particles.js",
+							"orthographic.js",
+							"icosahedron.js",
+							"knot.js"];
+		animation.setAttribute('src', "js/" + animations[ getRandomInt(0, animations.length) ]);
+		//animation.setAttribute('src', "js/" + animations[ 6 ]);
+		document.body.appendChild( animation );
+	</script>
+	<!--
+	<div id="below" style="background:gold; color:#03003d; font-size:350px; text-align:center;">
+		Fuck <span style="xcolor:deeppink;">you Fucking</span> Fuck
+	</div>
+	-->
+</body>
+</html>
