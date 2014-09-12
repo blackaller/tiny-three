@@ -2,9 +2,9 @@
 // and http://threejs.org/examples/#canvas_geometry_panorama
 
 var container, stats;
-var camera, scene, projector, renderer, cubemap, torus, wemo;
+var camera, scene, projector, renderer, cubemap, torus;
 
-var wemomeshes = [];
+var video;
 
 var PI2 = Math.PI * 2;
 var time = 0;
@@ -17,10 +17,42 @@ animate();
 
 function init() {
 
+
   container = document.createElement( 'div' );
   document.body.appendChild( container );
 
-  camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 1, 10000 );
+  video  = document.createElement('video');
+  video.width    = 64;
+  video.height   = 48;
+  video.autoplay = true;
+  video.loop = true;
+
+
+
+  video.style.position = 'absolute';
+  video.style.top = '0px';
+  container.appendChild(video);
+
+  video.src = "http://storm.usc.edu/~black/IML-400/video-bg/video.mp4";
+  var hasUserMedia = navigator.webkitGetUserMedia ? true : false;
+
+
+
+  var videoTexture = new THREE.Texture( video );
+  videoTexture.minFilter = THREE.LinearFilter;
+  videoTexture.magFilter = THREE.LinearFilter;
+  videoTexture.format = THREE.RGBFormat;
+  videoTexture.generateMipmaps = false;
+  videoTexture.needsUpdate = true;
+
+  var videoMaterial   = new THREE.MeshLambertMaterial({
+  	color: 0xcccccc,
+  	reflectivity: 1,
+  	envmap : videoTexture
+  });
+  console.log(videoMaterial);
+
+  camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
   camera.position.set( 0, 0, 5000 );
 
   scene = new THREE.Scene();
@@ -36,12 +68,12 @@ function init() {
 
   // urls1 cubemap texture by <a href="http://www.zfight.com
   var urls1 = [
-    'textures/cube/skybox/px.jpg',
-    'textures/cube/skybox/nx.jpg',
-    'textures/cube/skybox/py.jpg',
-    'textures/cube/skybox/ny.jpg',
-    'textures/cube/skybox/pz.jpg',
-    'textures/cube/skybox/nz.jpg'
+    'textures/cube/roxy/px.jpg',
+    'textures/cube/roxy/nx.jpg',
+    'textures/cube/roxy/py.jpg',
+    'textures/cube/roxy/ny.jpg',
+    'textures/cube/roxy/pz.jpg',
+    'textures/cube/roxy/nz.jpg'
   ];
 
   // urls2 cubemap texture from http://aerotwist.com/tutorials/create-your-own-environment-maps/
@@ -71,6 +103,10 @@ function init() {
 
   } );
 
+
+
+
+
   var skybox = new THREE.Mesh( new THREE.BoxGeometry( 700, 700, 700 ), material );
 
   var ambient = new THREE.AmbientLight( 0xffffff );
@@ -85,26 +121,28 @@ function init() {
   });
 
 
-
-  var loader = new THREE.JSONLoader(),
-        callbackKey = function(geometry) {createScene(geometry,  0, 0, 0, 5, reflectionMaterial)};
-        loader.load("geometry/wemo-3d-1.js", callbackKey);
-
  torus = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(55,20,110),
-    reflectionMaterial
+    new THREE.TorusGeometry(80,16,10,10),
+    videoMaterial
   );
+  torus.rotation.y = -0.95; 
 
-  //scene.add(torus);
-  scene.add(wemo);
+  Ico = new THREE.Mesh(new THREE.IcosahedronGeometry(55,0), reflectionMaterial);
+  Ico.rotation.z = -0.45;
+
+
+  
+  scene.add(torus);
+  scene.add(Ico);
   scene.add(camera);
   scene.add(skybox);
 
-
+  /*
   stats = new Stats();
   stats.domElement.style.position = 'absolute';
   stats.domElement.style.top = '0px';
   container.appendChild( stats.domElement );
+  */
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -112,17 +150,7 @@ function init() {
 
   window.addEventListener( 'resize', onWindowResize, false );
 
-
-  function createScene(geometry, x, y, z, scale) {
-        wemo = new THREE.Mesh(geometry, reflectionMaterial);
-        wemo.position.set(x, y, z);
-        wemo.scale.set(scale, scale, scale);
-        wemomeshes.push(wemo);
-        scene.add(wemo);
-      }
 }
-
-
 
 function onWindowResize() {
 
@@ -142,17 +170,17 @@ function onDocumentMouseMove( event ) {
 function animate() {
   requestAnimationFrame( animate );
   render();
-  stats.update();
-  //torus.rotation.x += 2/400;
-  //torus.rotation.y += 2/600;
-  //wemo.rotation.x += 1/1200;
-  wemo.rotation.y += 1/500;
+  // stats.update();
+  torus.rotation.x += 2/400;
+  torus.rotation.y += 2/600;
+  Ico.rotation.x -= 2/400;
+  Ico.rotation.y -= 2/600;
 
 }
 
 
 function render() {
-  time += 0.0005;
+  time += 0.005;
 
   camera.position.x = Math.sin(time) * 400;
   camera.position.z = Math.cos(time) * 400;
