@@ -100,11 +100,12 @@ function init() {
   scene.add(camera);
   scene.add(skybox);
 
-
+  /*
   stats = new Stats();
   stats.domElement.style.position = 'absolute';
   stats.domElement.style.top = '0px';
   container.appendChild( stats.domElement );
+  *
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -142,7 +143,7 @@ function onDocumentMouseMove( event ) {
 function animate() {
   requestAnimationFrame( animate );
   render();
-  stats.update();
+  //stats.update();
   //torus.rotation.x += 2/400;
   //torus.rotation.y += 2/600;
   //wemo.rotation.x += 1/1200;
