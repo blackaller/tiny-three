@@ -105,7 +105,7 @@ function init() {
   stats.domElement.style.position = 'absolute';
   stats.domElement.style.top = '0px';
   container.appendChild( stats.domElement );
-  *
+  */
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
