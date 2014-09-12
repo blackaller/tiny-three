@@ -1,5 +1,6 @@
 // based on http://aerotwist.com/tutorials/create-your-own-environment-maps/
 // and http://threejs.org/examples/#canvas_geometry_panorama
+// cubemap by Jochum Skoglund: http://www.zfight.com/
 
 var container, stats;
 var camera, scene, projector, renderer, cubemap, torus, wemo;
@@ -12,8 +13,10 @@ var ORIGIN = new THREE.Vector3();
 
 var mouse = { x: 0, y: 0 }, INTERSECTED;
 
+
 init();
-animate();
+
+
 
 function init() {
 
@@ -86,26 +89,20 @@ function init() {
 
 
 
-  var loader = new THREE.JSONLoader(),
-        callbackKey = function(geometry) {createScene(geometry,  0, 0, 0, 5, reflectionMaterial)};
-        loader.load("geometry/wemo-3d-1.js", callbackKey);
+   var loader = new THREE.JSONLoader(),
+        callbackKey = function(geometry) {
+          wemo = new THREE.Mesh(geometry, reflectionMaterial);
+          wemo.position.set(0, 0, 0);
+          wemo.scale.set(5,5,4);
+          wemomeshes.push(wemo);
+        };
 
- torus = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(55,20,110),
-    reflectionMaterial
-  );
+  loader.load("geometry/wemo-3d-1.js", callbackKey);
+  loader.onLoadComplete=function(){scene.add( wemo );animate();}; 
 
-  //scene.add(torus);
-  scene.add(wemo);
   scene.add(camera);
   scene.add(skybox);
 
-  /*
-  stats = new Stats();
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.top = '0px';
-  container.appendChild( stats.domElement );
-  */
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -113,14 +110,6 @@ function init() {
 
   window.addEventListener( 'resize', onWindowResize, false );
 
-
-  function createScene(geometry, x, y, z, scale) {
-        wemo = new THREE.Mesh(geometry, reflectionMaterial);
-        wemo.position.set(x, y, z);
-        wemo.scale.set(scale, scale, scale);
-        wemomeshes.push(wemo);
-        scene.add(wemo);
-      }
 }
 
 
@@ -143,10 +132,6 @@ function onDocumentMouseMove( event ) {
 function animate() {
   requestAnimationFrame( animate );
   render();
-  //stats.update();
-  //torus.rotation.x += 2/400;
-  //torus.rotation.y += 2/600;
-  //wemo.rotation.x += 1/1200;
   wemo.rotation.y += 1/500;
 
 }
@@ -154,7 +139,6 @@ function animate() {
 
 function render() {
   time += 0.0005;
-
   camera.position.x = Math.sin(time) * 400;
   camera.position.z = Math.cos(time) * 400;
   camera.lookAt(ORIGIN);
