@@ -25,7 +25,8 @@
 			return Math.floor(Math.random() * (max - min)) + min;
 		}
 		var animation = document.createElement( 'script' );
-		var animations = [	"sphere.js",
+		var animations = [	"icosafunk.js",
+							"sphere.js",
 							"bubbles.js",
 							// "panorama.js", // too boring as it is now
 							"particles.js",
@@ -34,7 +35,7 @@
 							"knot.js",
 							"webcam-shader.js"];
 		//animation.setAttribute('src', "js/" + animations[ getRandomInt(0, animations.length) ]);
-		animation.setAttribute('src', "js/" + animations[ 5 ]);
+		animation.setAttribute('src', "js/" + animations[ 0 ]);
 		document.body.appendChild( animation );
 	</script>
 </body>
