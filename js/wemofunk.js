@@ -1,5 +1,5 @@
 var container, stats;
-var camera, scene, projector, renderer, Ico, Ico2, Ico3, cubemap;
+var camera, scene, projector, renderer, Ico, Ico4, Ico2, Ico3, cubemap, wemo;
 
 var PI2 = Math.PI * 2;
 
@@ -7,18 +7,19 @@ var uniforms1, uniforms2;
 
 var clock = new THREE.Clock();
 
+var wemomeshes = [];
 
 var mouse = { x: 0, y: 0 }, INTERSECTED;
 
 init();
-animate();
+//animate();
 
 function init() {
 
   container = document.createElement( 'div' );
   document.body.appendChild( container );
   // 32
-  camera = new THREE.PerspectiveCamera( 72, window.innerWidth / window.innerHeight, 0.1, 10000 );
+  camera = new THREE.PerspectiveCamera( 52, window.innerWidth / window.innerHeight, 0.1, 10000 );
   camera.position.set( 500, 0, 0 ); // original is 0
 
   scene = new THREE.Scene();
@@ -126,7 +127,7 @@ var reflection = THREE.ImageUtils.loadTextureCube( [ 'textures/disturb.jpg', 'te
 
     } );
 
-  var skybox = new THREE.Mesh( new THREE.BoxGeometry( 2600, 2600, 2600 ), skyMaterial );
+  var skybox = new THREE.Mesh( new THREE.BoxGeometry( 2900, 2900, 2900 ), skyMaterial );
   
   
   var L1 = new THREE.PointLight( 0xffffff, 1);
@@ -144,29 +145,38 @@ var reflection = THREE.ImageUtils.loadTextureCube( [ 'textures/disturb.jpg', 'te
 
 
   // IcoSphere -> THREE.IcosahedronGeometry(80, 1) 1-4
-  Ico = new THREE.Mesh(new THREE.IcosahedronGeometry(325,1), pinkMat);
+  Ico = new THREE.Mesh(new THREE.IcosahedronGeometry(175,0), shaderMaterial0);
   Ico.rotation.z = 0.5;
   scene.add(Ico);
 
 
-  Ico2 = new THREE.Mesh(new THREE.IcosahedronGeometry(325,1), pinkMat);
+  Ico2 = new THREE.Mesh(new THREE.IcosahedronGeometry(175,0), shaderMaterial0);
   Ico2.position.x = 0;
   //Ico2.material.side = THREE.DoubleSide;
   scene.add(Ico2);
 
-  Ico3 = new THREE.Mesh(new THREE.IcosahedronGeometry(325,1), pinkMat);
+  Ico3 = new THREE.Mesh(new THREE.IcosahedronGeometry(175,0), shaderMaterial0);
   scene.add(Ico3);
 
-  Ico4 = new THREE.Mesh(new THREE.IcosahedronGeometry(325,1), pinkMat);
+  Ico4 = new THREE.Mesh(new THREE.IcosahedronGeometry(175,0), shaderMaterial0);
   scene.add(Ico4);
+
+
+  var loader = new THREE.JSONLoader(),
+        callbackKey = function(geometry) {
+          wemo = new THREE.Mesh(geometry, shaderMaterial0);
+          wemo.position.set(0, 0, -10);
+          wemo.scale.set(30,30,20);
+          wemomeshes.push(wemo);
+        };
+
+  loader.load("geometry/wemo-3d-1.js", callbackKey);
+  loader.onLoadComplete=function(){scene.add( wemo );animate();};
 
   scene.add(skybox);
 
 
-  stats = new Stats();
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.top = '0px';
-  //container.appendChild( stats.domElement );
+
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -198,7 +208,6 @@ function animate() {
   requestAnimationFrame( animate );
 
   render();
-  stats.update();
  
   
   Ico.rotation.x += 2/400;
@@ -213,9 +222,15 @@ function animate() {
   Ico4.rotation.x += 2/600;
   Ico4.rotation.y += 2/400;
 
+  wemo.rotation.y -= 2/100 * Math.sin( THREE.Math.degToRad( 2 * theta ) );
+
+  wemo.position.z -= Math.sin( THREE.Math.degToRad( 2 * theta ) );
+  wemo.scale.z += 2/100 * Math.sin( THREE.Math.degToRad( 2 * theta ) );
+
+
 }
 
-var radius = 500;
+var radius = 600;
 var theta = 0;
 
 function render() {
@@ -224,10 +239,14 @@ function render() {
         uniforms1.time.value += delta * 5;
         uniforms2.time.value = clock.elapsedTime;
 
-  theta += 1 ;
+  theta += 0.2 ;
   Ico.position.z = radius * 4 * Math.cos( THREE.Math.degToRad( theta ) );
   Ico.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
   Ico.position.y = radius * 3 * Math.sin( THREE.Math.degToRad( theta/4 ) );
+
+  Ico2.position.z = -radius * 4 * Math.cos( THREE.Math.degToRad( theta ) );
+  Ico2.position.x = -radius * Math.sin( THREE.Math.degToRad( theta ) );
+  Ico2.position.y = -radius * 3 * Math.sin( THREE.Math.degToRad( theta/4 ) );
 
   Ico3.position.z = radius * 3 * Math.sin( THREE.Math.degToRad( 180 + theta/2 ) );
   Ico3.position.x = radius * Math.cos( THREE.Math.degToRad( 180 + theta/6 ) );
@@ -246,7 +265,8 @@ function render() {
   camera.position.z = 1000 * Math.cos( THREE.Math.degToRad( theta ) );
 
   //camera.lookAt( scene.position );
-  camera.lookAt( Ico3.position );
+  //camera.lookAt( Ico3.position );
+  camera.lookAt( wemo.position );
 
 
   camera.updateMatrixWorld();
