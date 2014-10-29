@@ -30,8 +30,6 @@
     var camera, scene, renderer;
     var effect, controls;
     var element, container;
-    var cubemap, wemo;
-    var wemomeshes = [];
 
     var clock = new THREE.Clock();
 
@@ -102,21 +100,6 @@
       var mesh = new THREE.Mesh(geometry, material);
       mesh.rotation.x = -Math.PI / 2;
       scene.add(mesh);
-
-      var loader = new THREE.JSONLoader(),
-        callbackKey = function(geometry) {
-          wemo = new THREE.Mesh(geometry, material);
-          wemo.position.set(00, 25, -50);
-          wemo.scale.set(2,2,1);
-          //wemo.rotation.y = 90;
-          wemomeshes.push(wemo);
-        };
-
-      loader.load("geometry/wemo-3d-1.js", callbackKey);
-      loader.onLoadComplete=function(){scene.add( wemo );animate();}; 
-
-
-
 
       window.addEventListener('resize', resize, false);
       setTimeout(resize, 1);
