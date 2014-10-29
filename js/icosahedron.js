@@ -17,7 +17,11 @@ function init() {
   document.body.appendChild( container );
 
   camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 1, 10000 );
+  
+  
+
   camera.position.set( 0, 0, 2000 );
+
 
   scene = new THREE.Scene();
 
@@ -75,24 +79,24 @@ function init() {
   scene.add(L2);
 
   // IcoSphere -> THREE.IcosahedronGeometry(80, 1) 1-4
-  Ico = new THREE.Mesh(new THREE.IcosahedronGeometry(125,1), pinkMat);
+  Ico = new THREE.Mesh(new THREE.IcosahedronGeometry(150,1), pinkMat); // 125
   Ico.rotation.z = 0.5;
   scene.add(Ico);
 
 
-  Ico2 = new THREE.Mesh(new THREE.IcosahedronGeometry(175,1), pinkMat);
+  Ico2 = new THREE.Mesh(new THREE.IcosahedronGeometry(250,1), pinkMat); // 175
   Ico2.position.x = 0;
   //Ico2.material.side = THREE.DoubleSide;
   scene.add(Ico2);
 
-  Ico3 = new THREE.Mesh(new THREE.IcosahedronGeometry(125,1), pinkMat);
+  Ico3 = new THREE.Mesh(new THREE.IcosahedronGeometry(150,1), pinkMat); // 125
   scene.add(Ico3);
 
 
   stats = new Stats();
   stats.domElement.style.position = 'absolute';
   stats.domElement.style.top = '0px';
-  container.appendChild( stats.domElement );
+  //container.appendChild( stats.domElement );
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -161,9 +165,9 @@ function render() {
   camera.updateMatrixWorld();
   
 
-  red   = 50 // Math.floor(Math.sin(theta/4 + 0) * 127 + 128);
+  red   = 35 // 50 // Math.floor(Math.sin(theta/4 + 0) * 127 + 128);
   green = 0 // Math.floor(Math.sin(theta/20 + 1) * 127 + 128);
-  blue  = Math.floor(Math.cos(theta/52 + 2) * 127); // + 128;
+  blue  = 20 // Math.floor(Math.cos(theta/52 + 2) * 127); // + 128;
 
 
   //renderer.setClearColor( "rgb(" + red + "," + green + "," + blue + ")" );
