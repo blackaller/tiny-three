@@ -30,7 +30,7 @@
     var camera, scene, renderer;
     var effect, controls;
     var element, container;
-    var cubemap, wemo, wemo2;
+    var cubemap, wemo, wemo2, wemo3, wemo4;
     var wemomeshes = [];
 
     var clock = new THREE.Clock();
@@ -168,11 +168,19 @@
           wemo2.position.set(0, 25, 80);
           wemo2.scale.set(3,3,4);
 
-          wemomeshes.push(wemo, wemo2);
+          wemo3 = new THREE.Mesh(geometry, reflectionMaterial);
+          wemo3.position.set(80, 25, 0);
+          wemo3.scale.set(3,3,4);
+
+          wemo4 = new THREE.Mesh(geometry, reflectionMaterial);
+          wemo4.position.set(-80, 25, 0);
+          wemo4.scale.set(3,3,4);
+
+          wemomeshes.push(wemo, wemo2, wemo3, wemo4);
         };
 
       loader.load("geometry/wemo-3d-1.js", callbackKey);
-      loader.onLoadComplete=function(){scene.add( wemo, wemo2 ); scene.add( wemo2 ); animate();}; 
+      loader.onLoadComplete=function(){scene.add( wemo, wemo2, wemo3, wemo4 ); animate();}; 
       scene.add(skybox);
 
 
@@ -207,7 +215,9 @@
     function animate(t) {
       requestAnimationFrame(animate);
       wemo.rotation.y += 1/2000;
-      wemo2.rotation.y -= 1/2000;
+      wemo2.rotation.y += 1/2000;
+      wemo3.rotation.y -= 1/2000;
+      wemo4.rotation.y -= 1/2000;
       update(clock.getDelta());
       render(clock.getDelta());
     }
