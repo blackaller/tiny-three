@@ -46,7 +46,7 @@ function init() {
     'textures/cube/roxy/ny.jpg',
     'textures/cube/roxy/pz.jpg',
     'textures/cube/roxy/nz.jpg'
-  ],
+  ];
 
   // wrap it up into the object that we need
   cubemap = THREE.ImageUtils.loadTextureCube(urls);

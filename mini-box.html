@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>three.js box</title>
+	<title>threejs test</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<script src="js/lib/three.min.js"></script>
@@ -60,18 +60,26 @@
 			return Math.floor(Math.random() * (max - min)) + min;
 		}
 		var animation = document.createElement( 'script' );
-		var animations = [	"sphere.js",
+		var animations = [	
+							"sphere.js",
 							"bubbles.js",
 							// "panorama.js", // too boring as it is now
 							"particles.js",
 							"orthographic.js",
 							"icosahedron.js",
+<<<<<<< HEAD
 							"knot.js",
 
 							"shader.js"];
 		//animation.setAttribute('src', "js/" + animations[ getRandomInt(0, animations.length) ]);
 		animation.setAttribute('src', "js/" + animations[ 4 ]);
 
+=======
+							"wemosky.js",
+							"webcam-shader.js"];
+		//animation.setAttribute('src', "js/" + animations[ getRandomInt(0, animations.length) ]);
+		animation.setAttribute('src', "js/" + animations[ 5 ]);
+>>>>>>> ca14d0dbfb4a888b08a52962f28b144ed8d840e1
 		document.body.appendChild( animation );
 	</script>
 </body>

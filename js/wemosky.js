@@ -1,8 +1,11 @@
 // based on http://aerotwist.com/tutorials/create-your-own-environment-maps/
 // and http://threejs.org/examples/#canvas_geometry_panorama
+// cubemap by Jochum Skoglund: http://www.zfight.com/
 
 var container, stats;
-var camera, scene, projector, renderer, cubemap, torus;
+var camera, scene, projector, renderer, cubemap, torus, wemo;
+
+var wemomeshes = [];
 
 var PI2 = Math.PI * 2;
 var time = 0;
@@ -10,15 +13,17 @@ var ORIGIN = new THREE.Vector3();
 
 var mouse = { x: 0, y: 0 }, INTERSECTED;
 
+
 init();
-animate();
+
+
 
 function init() {
 
   container = document.createElement( 'div' );
   document.body.appendChild( container );
 
-  camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
+  camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 1, 10000 );
   camera.position.set( 0, 0, 5000 );
 
   scene = new THREE.Scene();
@@ -34,12 +39,12 @@ function init() {
 
   // urls1 cubemap texture by <a href="http://www.zfight.com
   var urls1 = [
-    'textures/cube/roxy/px.jpg',
-    'textures/cube/roxy/nx.jpg',
-    'textures/cube/roxy/py.jpg',
-    'textures/cube/roxy/ny.jpg',
-    'textures/cube/roxy/pz.jpg',
-    'textures/cube/roxy/nz.jpg'
+    'textures/cube/skybox/px.jpg',
+    'textures/cube/skybox/nx.jpg',
+    'textures/cube/skybox/py.jpg',
+    'textures/cube/skybox/ny.jpg',
+    'textures/cube/skybox/pz.jpg',
+    'textures/cube/skybox/nz.jpg'
   ];
 
   // urls2 cubemap texture from http://aerotwist.com/tutorials/create-your-own-environment-maps/
@@ -83,20 +88,21 @@ function init() {
   });
 
 
- torus = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(50,15,500),
-    reflectionMaterial
-  );
 
-  scene.add(torus);
+   var loader = new THREE.JSONLoader(),
+        callbackKey = function(geometry) {
+          wemo = new THREE.Mesh(geometry, reflectionMaterial);
+          wemo.position.set(0, 0, 0);
+          wemo.scale.set(5,5,4);
+          wemomeshes.push(wemo);
+        };
+
+  loader.load("geometry/wemo-3d-1.js", callbackKey);
+  loader.onLoadComplete=function(){scene.add( wemo );animate();}; 
+
   scene.add(camera);
   scene.add(skybox);
 
-
-  stats = new Stats();
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.top = '0px';
-  container.appendChild( stats.domElement );
 
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -105,6 +111,8 @@ function init() {
   window.addEventListener( 'resize', onWindowResize, false );
 
 }
+
+
 
 function onWindowResize() {
 
@@ -124,16 +132,13 @@ function onDocumentMouseMove( event ) {
 function animate() {
   requestAnimationFrame( animate );
   render();
-  stats.update();
-  torus.rotation.x += 2/400;
-  torus.rotation.y += 2/600;
+  wemo.rotation.y += 1/500;
 
 }
 
 
 function render() {
-  time += 0.005;
-
+  time += 0.0005;
   camera.position.x = Math.sin(time) * 400;
   camera.position.z = Math.cos(time) * 400;
   camera.lookAt(ORIGIN);

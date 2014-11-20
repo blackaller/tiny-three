@@ -30,8 +30,6 @@
     var camera, scene, renderer;
     var effect, controls;
     var element, container;
-    var cubemap, wemo, wemo2, wemo3, wemo4;
-    var wemomeshes = [];
 
     var clock = new THREE.Clock();
 
@@ -40,7 +38,6 @@
 
     function init() {
       renderer = new THREE.WebGLRenderer();
-      renderer.setClearColor( 0xff0033 );
       element = renderer.domElement;
       container = document.getElementById('example');
       container.appendChild(element);
@@ -90,100 +87,19 @@
       texture.repeat = new THREE.Vector2(50, 50);
       texture.anisotropy = renderer.getMaxAnisotropy();
 
-
-
-      // urls1 cubemap texture by <a href="http://www.zfight.com
-      var urls1 = [
-        'textures/cube/skybox/px.jpg',
-        'textures/cube/skybox/nx.jpg',
-        'textures/cube/skybox/py.jpg',
-        'textures/cube/skybox/ny.jpg',
-        'textures/cube/skybox/pz.jpg',
-        'textures/cube/skybox/nz.jpg'
-      ];
-
-      // urls2 cubemap texture from http://aerotwist.com/tutorials/create-your-own-environment-maps/
-      var urls2 = [
-        'textures/cube/canary/pos-x.png',
-        'textures/cube/canary/neg-x.png',
-        'textures/cube/canary/pos-y.png',
-        'textures/cube/canary/neg-y.png',
-        'textures/cube/canary/pos-z.png',
-        'textures/cube/canary/neg-z.png'
-      ];
-
-      var cubemap = THREE.ImageUtils.loadTextureCube(urls1);
-      cubemap.format = THREE.RGBFormat;
-
-      // Skybox
-      var shader = THREE.ShaderLib[ "cube" ];
-      shader.uniforms[ "tCube" ].value = cubemap;
-
-      var skyMaterial = new THREE.ShaderMaterial( {
-
-        fragmentShader: shader.fragmentShader,
-        vertexShader: shader.vertexShader,
-        uniforms: shader.uniforms,
-        depthWrite: false,
-        side: THREE.BackSide
-
-      } );
-
       var material = new THREE.MeshPhongMaterial({
         color: 0xffffff,
         specular: 0xffffff,
-        shininess: 1,
+        shininess: 20,
         shading: THREE.FlatShading,
-        map: texture,
-        envMap: cubemap,
-        alphaMap: texture
-      });
-
-      var skybox = new THREE.Mesh( new THREE.BoxGeometry( 700, 700, 700 ), skyMaterial );
-
-      var ambient = new THREE.AmbientLight( 0xffffff );
-      scene.add(ambient);
-
-      var pointLight = new THREE.PointLight( 0xffffff, 2 );
-      scene.add( pointLight );
-
-      var reflectionMaterial = new THREE.MeshBasicMaterial({
-        color: 0xcccccc,
-        envMap: cubemap
+        map: texture
       });
 
       var geometry = new THREE.PlaneGeometry(1000, 1000);
 
       var mesh = new THREE.Mesh(geometry, material);
       mesh.rotation.x = -Math.PI / 2;
-      //scene.add(mesh);
-
-      var loader = new THREE.JSONLoader(),
-        callbackKey = function(geometry) {
-          wemo = new THREE.Mesh(geometry, reflectionMaterial);
-          wemo.position.set(0, 25, -80);
-          wemo.scale.set(3,3,4);
-
-          wemo2 = new THREE.Mesh(geometry, reflectionMaterial);
-          wemo2.position.set(0, 25, 80);
-          wemo2.scale.set(3,3,4);
-
-          wemo3 = new THREE.Mesh(geometry, reflectionMaterial);
-          wemo3.position.set(80, 25, 0);
-          wemo3.scale.set(3,3,4);
-
-          wemo4 = new THREE.Mesh(geometry, reflectionMaterial);
-          wemo4.position.set(-80, 25, 0);
-          wemo4.scale.set(3,3,4);
-
-          wemomeshes.push(wemo, wemo2, wemo3, wemo4);
-        };
-
-      loader.load("geometry/wemo-3d-1.js", callbackKey);
-      loader.onLoadComplete=function(){scene.add( wemo, wemo2, wemo3, wemo4 ); animate();}; 
-      scene.add(skybox);
-
-
+      scene.add(mesh);
 
       window.addEventListener('resize', resize, false);
       setTimeout(resize, 1);
@@ -214,10 +130,7 @@
 
     function animate(t) {
       requestAnimationFrame(animate);
-      wemo.rotation.y += 1/2000;
-      wemo2.rotation.y += 1/2000;
-      wemo3.rotation.y -= 1/2000;
-      wemo4.rotation.y -= 1/2000;
+
       update(clock.getDelta());
       render(clock.getDelta());
     }
