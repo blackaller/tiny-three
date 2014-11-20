@@ -25,11 +25,11 @@
 
 		void main( void ) {
 
-			vec2 position = -3.0 + 2.0 * vUv;
+			vec2 position = -1.0 + 12.5 * vUv; // 3, 2 is good
 
-			float red = abs( sin( position.x * position.x + time / 5.0 ) );
-			float green = abs( sin( position.x * position.y + time / 4.0 ) );
-			float blue = abs( sin( position.x * position.x + time / 3.0 ) );
+			float red = abs( sin( position.x * position.y + time / 3.0 ) );
+			float green = abs( sin( position.x * position.y + time / 2.0 ) );
+			float blue = abs( sin( position.x * position.y + time / 1.0 ) );
 			gl_FragColor = vec4( red, green, blue, 1.0 );
 
 		}
