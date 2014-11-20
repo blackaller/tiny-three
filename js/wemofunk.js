@@ -135,7 +135,7 @@ var reflection = THREE.ImageUtils.loadTextureCube( [ 'textures/disturb.jpg', 'te
 
     } );
 
-  var skybox = new THREE.Mesh( new THREE.BoxGeometry( 2900, 2900, 2900 ), skyMaterial );
+  var skybox = new THREE.Mesh( new THREE.BoxGeometry( 1900, 1900, 1900 ), skyMaterial );
   
   
   var L1 = new THREE.PointLight( 0xffffff, 1);
@@ -153,20 +153,20 @@ var reflection = THREE.ImageUtils.loadTextureCube( [ 'textures/disturb.jpg', 'te
 
 
   // IcoSphere -> THREE.IcosahedronGeometry(80, 1) 1-4
-  Ico = new THREE.Mesh(new THREE.IcosahedronGeometry(175,0), shaderMaterial3);
+  Ico = new THREE.Mesh(new THREE.IcosahedronGeometry(275,0), shaderMaterial3);
   Ico.rotation.z = 0.5;
   scene.add(Ico);
 
 
-  Ico2 = new THREE.Mesh(new THREE.IcosahedronGeometry(175,0), shaderMaterial3);
+  Ico2 = new THREE.Mesh(new THREE.IcosahedronGeometry(275,0), shaderMaterial3);
   Ico2.position.x = 0;
   //Ico2.material.side = THREE.DoubleSide;
   scene.add(Ico2);
 
-  Ico3 = new THREE.Mesh(new THREE.IcosahedronGeometry(175,0), shaderMaterial3);
+  Ico3 = new THREE.Mesh(new THREE.IcosahedronGeometry(275,0), shaderMaterial3);
   scene.add(Ico3);
 
-  Ico4 = new THREE.Mesh(new THREE.IcosahedronGeometry(175,0), shaderMaterial3);
+  Ico4 = new THREE.Mesh(new THREE.IcosahedronGeometry(275,0), shaderMaterial3);
   scene.add(Ico4);
 
 
