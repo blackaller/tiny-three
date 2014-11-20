@@ -173,8 +173,8 @@ var reflection = THREE.ImageUtils.loadTextureCube( [ 'textures/disturb.jpg', 'te
   var loader = new THREE.JSONLoader(),
         callbackKey = function(geometry) {
           wemo = new THREE.Mesh(geometry, shaderMaterial3);
-          wemo.position.set(0, 0, -10);
-          wemo.scale.set(30,30,20);
+          wemo.position.set(0, 0, -20);
+          wemo.scale.set(30,30,50);
           wemomeshes.push(wemo);
         };
 
